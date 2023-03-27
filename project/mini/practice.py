@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pickle
+import joblib
 
 menu = ["메인페이지", "데이터페이지", "기타"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -257,10 +258,11 @@ elif choice == "데이터페이지":
         '원하는 차트를 골라주세요',
         ('Chart1', 'Chart2', 'Chart3'))
         if option == 'Chart1':
+
             # 모델 불러오기
-            model_path = "mini/XGBoost.pkl"
+            model_path = f"{os.path.dirname(os.path.abspath(__file__))}/XGBoost.pkl"
             with open(model_path, 'rb') as f:
-                model = pickle.load(f)
+                model = joblib.load(model_path)
 
                 st.title('Linear Regression Model')
 
