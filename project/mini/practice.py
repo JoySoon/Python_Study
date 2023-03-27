@@ -342,17 +342,17 @@ elif choice == "데이터페이지":
             model = joblib.load(model_path)
 
             st.title('XGBoost')
-            st.write("게임에 따른 승률")
+            st.write("경기수에 따른 승리 게임")
 
             # first line
             r1_col1, r1_col2 = st.columns(2)
-            게임수 = r1_col1.slider("게임수", 0, 40)
+            경기수 = r1_col1.slider("경기수", 0, 40)
             승리수 = r1_col2.slider("승리수", 0, 40)
 
             predict_button = st.button("예측")
 
             if predict_button:
-                input_data = np.array([승리수, 게임수]*38 + [게임수])
+                input_data = np.array([승리수, 경기수]*38 + [경기수])
                 input_data = input_data.reshape(1, -1)
                 prediction = model.predict(input_data)[0]
                 prediction = round(prediction, 2)
