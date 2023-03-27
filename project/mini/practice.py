@@ -363,11 +363,13 @@ elif choice == "데이터페이지":
 
                 if predict_button:
                     variable1 = np.array([승리수, 경기수])
+                    variable2 = np.zeros((1, 77))
                     model1 = joblib.load('project/XGBoost.pkl')
-                    pred1 = [0]
-                    st.write(variable1)
+                    # pred1 = [0]
+                    # st.write(variable1)
                     # pred1 = model1.predict([variable1])
-                    # pred1 = pred1.round(2)
+                    pred1 = model1.predict(variable2)
+                    pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
 
 
