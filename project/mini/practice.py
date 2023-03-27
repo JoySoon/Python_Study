@@ -343,23 +343,7 @@ elif choice == "데이터페이지":
 
                 st.title('DecisionTree')
 
-                # Streamlit 앱 설정
-                st.write('입력 변수')
-
-                # 입력 변수를 위한 슬라이더 추가
-                x1 = st.slider('X1', 0.0, 10.0, 0.5, 0.01)
-                x2 = st.slider('X2', 0.0, 1.0, 0.5, 0.01)
-
-                # 모델을 사용하여 예측 수행
-                # x = np.array([x1 * 77], [x2]).reshape(1, -1)
-                x = np.array([x1]*77).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
-
-                y = model.predict(x)
-                y = y[0]
-
-                # 예측 결과 출력
-                st.subheader('예측 결과')
-                st.write('Y:', round(y, 2))
+ 
         
 
         elif option == 'XGBoost':
@@ -369,21 +353,20 @@ elif choice == "데이터페이지":
 
                 st.title('XGBoost')
 
-                # create sidebar with input parameters
-                st.write('Input Parameters')
-                games_played = st.slider('Games Played', 0, 82, 41)
-                wins = st.slider('Wins', 0, games_played, 20)
+                st.write("LinearRegressor")
+                # 첫번째 행
+                r1_col1, r1_col2 = st.columns(2)
+                경기수 = r1_col1.slider("경기수", 0, 40)
+                승리수 = r1_col2.slider("승리수", 0, 40)
 
-                # use model to make prediction
-                x = np.array([games_played, wins]).reshape(1, -1)
-                prob = model.predict_proba(x)
-                win_prob = prob[0][1]
-                odds = round(win_prob / (1 - win_prob), 2)
+                predict_button = st.button("예측")
 
-                #  show prediction result
-                st.subheader('Prediction Result')
-                st.write('Win Probability:', round(win_prob*100, 2), '%')
-                st.write('Odds:', odds)
+                if predict_button:
+                    variable1 = np.array([승리수, 경기수])
+                    model1 = joblib.load('MH/LRmodel.pkl')
+                    pred1 = model1.predict([variable1])
+                    pred1 = pred1.round(2)
+                    st.metric("결과: ", pred1[0])
 
 
 
