@@ -336,9 +336,9 @@ elif choice == "데이터페이지":
 
 
         elif option == 'XGBoost':
+
             model_path = "project/XGBoost.pkl"
-            with open(model_path, 'rb') as f:
-            model = joblib.load(f)
+            model = joblib.load(model_path)
 
             st.title('XGBoost')
             st.write("Games won by number of matches")
@@ -356,7 +356,7 @@ elif choice == "데이터페이지":
                 prediction = model.predict(input_data)[0]
                 prediction = round(prediction, 2)
                 st.write(f"Predicted number of games won: {prediction}")
-                
+
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
         st.write()
