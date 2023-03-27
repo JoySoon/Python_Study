@@ -262,9 +262,9 @@ elif choice == "데이터페이지":
         st.write("머신러닝 모델입니다")
         option = st.selectbox(
         '원하는 차트를 골라주세요',
-        ('선형 회귀', '랜덤 포레스트', '결정 트리','XGBoost'))
+        ('LinearRegressor', 'RandomForest', 'DecisionTree','XGBoost'))
 
-        if option == '선형 회귀':
+        if option == '선형회귀':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
             model_path = "project/model.pkl"
@@ -284,7 +284,7 @@ elif choice == "데이터페이지":
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
-        elif option == '랜덤 포레스트':
+        elif option == 'RandomForest':
 
             # 랜덤 포레스트 모델 불러오기
             model_path = "project/RFmodel.pkl"
@@ -338,31 +338,25 @@ elif choice == "데이터페이지":
         elif option == 'XGBoost':
             model_path = "project/XGBoost.pkl"
             with open(model_path, 'rb') as f:
-                model = joblib.load(f)
+            model = joblib.load(f)
 
-                st.title('XGBoost')
+            st.title('XGBoost')
+            st.write("Games won by number of matches")
 
-                st.write("경기 수에 따른 승리 게임")
+            # first line
+            r1_col1, r1_col2 = st.columns(2)
+            number_of_matches = r1_col1.slider("Number of matches", 0, 40)
+            number_of_wins = r1_col2.slider("Number of wins", 0, 40)
 
-                # 첫번째 행
-                r1_col1, r1_col2 = st.columns(2)
-                경기수 = r1_col1.slider("경기수", 0, 40)
-                승리수 = r1_col2.slider("승리수", 0, 40)
+            predict_button = st.button("Predict")
 
-                predict_button = st.button("예측")
-
-
-                if predict_button:
-                    variable1 = np.array([승리수, 경기수])
-                    variable2 = np.zeros((1, 77))
-                    model1 = joblib.load('project/XGBoost.pkl')
-                    # pred1 = [0]
-                    # st.write(variable1)
-                    # pred1 = model1.predict([variable1])
-                    pred1 = model1.predict(variable2)
-                    pred1 = pred1.round(2)
-                    st.metric("결과: ", pred1[0])
-
+            if predict_button:
+                input_data = np.array([number_of_wins, number_of_matches])
+                input_data = input_data.reshape(1, -1)
+                prediction = model.predict(input_data)[0]
+                prediction = round(prediction, 2)
+                st.write(f"Predicted number of games won: {prediction}")
+                
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
         st.write()
