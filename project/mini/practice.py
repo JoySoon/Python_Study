@@ -343,8 +343,7 @@ elif choice == "데이터페이지":
 
                 st.title('DecisionTree')
 
-                            # Streamlit 앱 설정
-                st.title('결정트리 모델')
+                # Streamlit 앱 설정
                 st.write('입력 변수')
 
                 # 입력 변수를 위한 슬라이더 추가
@@ -370,21 +369,21 @@ elif choice == "데이터페이지":
 
                 st.title('XGBoost')
 
-                    # create sidebar with input parameters
-                    st.write('Input Parameters')
-                    games_played = st.slider('Games Played', 0, 82, 41)
-                    wins = st.slider('Wins', 0, games_played, 20)
+                # create sidebar with input parameters
+                st.write('Input Parameters')
+                games_played = st.slider('Games Played', 0, 82, 41)
+                wins = st.slider('Wins', 0, games_played, 20)
 
-                    # use model to make prediction
-                    x = np.array([games_played, wins]).reshape(1, -1)
-                    prob = model.predict_proba(x)
-                    win_prob = prob[0][1]
-                    odds = round(win_prob / (1 - win_prob), 2)
+                # use model to make prediction
+                x = np.array([games_played, wins]).reshape(1, -1)
+                prob = model.predict_proba(x)
+                win_prob = prob[0][1]
+                odds = round(win_prob / (1 - win_prob), 2)
 
-                     # show prediction result
-                    st.subheader('Prediction Result')
-                    st.write('Win Probability:', round(win_prob*100, 2), '%')
-                    st.write('Odds:', odds)
+                #  show prediction result
+                st.subheader('Prediction Result')
+                st.write('Win Probability:', round(win_prob*100, 2), '%')
+                st.write('Odds:', odds)
 
 
 
