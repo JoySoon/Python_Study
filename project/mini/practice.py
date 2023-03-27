@@ -349,7 +349,7 @@ elif choice == "데이터페이지":
             게임수 = r1_col1.slider("게임수", 0, 40)
             승리수 = r1_col2.slider("승리수", 0, 40)
 
-            predict_button = st.button("Predict")
+            predict_button = st.button("예측")
 
             if predict_button:
                 input_data = np.array([승리수, 게임수]*38 + [게임수])
