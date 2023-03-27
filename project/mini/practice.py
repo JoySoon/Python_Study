@@ -267,7 +267,7 @@ elif choice == "데이터페이지":
         if option == '선형회귀':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
-            model_path = "MH/LRmodel.pkl"
+            model_path = "project/model.pkl"
             model = joblib.load(model_path)
 
             st.write("LinearRegressor")
@@ -280,14 +280,14 @@ elif choice == "데이터페이지":
 
             if predict_button:
                     variable1 = np.array([승리수, 경기수]*28)
-                    model1 = joblib.load('MH/LRmodel.pkl')
+                    model1 = joblib.load('project/model.pkl')
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
         elif option == '랜덤 포레스트':
 
             # 랜덤 포레스트 모델 불러오기
-            model_path = "MH/RFmodel.pkl"
+            model_path = "project/RFmodel.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -312,7 +312,7 @@ elif choice == "데이터페이지":
         elif option == '결정 트리':
 
             # 결정트리 모델 불러오기
-            model_path = "MH/DecisionTree.pkl"
+            model_path = "project/DecisionTree.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
