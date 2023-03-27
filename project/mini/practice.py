@@ -264,7 +264,7 @@ elif choice == "데이터페이지":
         '원하는 차트를 골라주세요',
         ('선형 회귀', '랜덤 포레스트', '결정 트리','XGBoost'))
 
-        if option == '선형회귀':
+        if option == '선형 회귀':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
             model_path = "project/model.pkl"
