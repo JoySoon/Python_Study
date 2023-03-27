@@ -258,7 +258,7 @@ elif choice == "데이터페이지":
         ('Chart1', 'Chart2', 'Chart3'))
         if option == 'Chart1':
             # 모델 불러오기
-            model_path = "MH/model.pkl"
+            model_path = "project/mini/XGBoost.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
@@ -280,7 +280,7 @@ elif choice == "데이터페이지":
         elif option == 'Chart2':
 
             # 모델 불러오기
-            model_path = "MH/model.pkl"
+            model_path = "project/mini/RFmodel.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
