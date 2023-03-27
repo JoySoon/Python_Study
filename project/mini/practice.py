@@ -7,7 +7,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pickle
-import xgboost
 
 menu = ["메인페이지", "데이터페이지", "기타"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -169,7 +168,7 @@ elif choice == "데이터페이지":
         option = st.selectbox(
         '원하는 차트를 골라주세요',
         ('스탯비교 그래프', '승률데이터 그래프', 'Chart'))
-        st.write(f'고르신 {option} 차트를 출력하겠습니다: ')
+        st.write(f'고르신 {option}를 출력하겠습니다: ')
 
         if option == '스탯비교 그래프':
             # CSV 파일이 업로드되었는지 확인
@@ -177,14 +176,18 @@ elif choice == "데이터페이지":
             df = pd.read_csv(url)
 
             # 선택한 컬럼명으로 데이터프레임 필터링
-            conf_val = st.selectbox("Select value in CONF column", options=df['CONF'].unique())
-            year_val = st.selectbox("Select value in YEAR column", options=df['YEAR'].unique())
+            conf_val = st.selectbox("원하는 지역을 골라주세요", options=df['CONF'].unique())
+        
+            year_list = df['YEAR'].unique().tolist()
+            year_list.sort(reverse=False) # 오름차순 정렬
+            year_val = st.selectbox("원하는 시즌을 골라주세요", options=year_list)
             filtered_df = df[(df['CONF'] == conf_val) & (df['YEAR'] == year_val)]
+
 
             # TEAM의 컬럼명으로 데이터프레임 필터링하여 radar chart 출력
             team_col = "TEAM"
-            team_vals = st.multiselect("Select values in TEAM column for radar chart", options=filtered_df[team_col].unique())
-            stats = st.multiselect('Select statistics for radar chart:', filtered_df.columns.tolist())
+            team_vals = st.multiselect("비교하고 싶은 Team을 골라주세요", options=filtered_df[team_col].unique())
+            stats = st.multiselect('Radar chart로 나타내고 싶은 스탯을 골라주세요:', filtered_df.columns.tolist())
 
             # make_subplots로 1x1 subplot 만들기
             fig = make_subplots(rows=1, cols=1, specs=[[{'type': 'polar'}]])
@@ -226,8 +229,11 @@ elif choice == "데이터페이지":
                 st.write(sub_df)
                 
                 # 사용자로부터 시즌 입력 받기
-                user_YEAR = st.selectbox("원하시는 시즌을 골라주세요:", [''] + sub_df['YEAR'].unique().tolist())
-                
+                # user_YEAR = st.selectbox("원하시는 시즌을 골라주세요:", [''] + sub_df['YEAR'].unique().tolist())
+                unique_years = sub_df['YEAR'].unique().tolist()
+                sorted_years = sorted(unique_years, reverse=False) # 오름차순 정렬
+                user_YEAR = st.selectbox("원하시는 시즌을 골라주세요:", [''] + sorted_years)
+
                 # 선택한 시즌에 해당하는 행 출력
                 if user_YEAR != "":
                     sub_df = sub_df[sub_df['YEAR'] == int(user_YEAR)]
@@ -258,9 +264,8 @@ elif choice == "데이터페이지":
         '원하는 차트를 골라주세요',
         ('Chart1', 'Chart2', 'Chart3'))
         if option == 'Chart1':
-
             # 모델 불러오기
-            model_path = "project/RFmodel.pkl"
+            model_path = "project/model.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
@@ -275,6 +280,8 @@ elif choice == "데이터페이지":
                 # use model to make prediction
                 x = np.array([x]*77).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
                 y = model.predict(x)
+                y = y * 100
+                y = y.round(2)
 
                 # show prediction result
                 st.subheader('Prediction Result')
@@ -282,7 +289,7 @@ elif choice == "데이터페이지":
         elif option == 'Chart2':
 
             # 모델 불러오기
-            model_path = "project/XGBoost.pkl"
+            model_path = "project/model.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
