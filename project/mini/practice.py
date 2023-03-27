@@ -346,8 +346,8 @@ elif choice == "데이터페이지":
 
             # first line
             r1_col1, r1_col2 = st.columns(2)
-            number_of_matches = r1_col1.slider("게임수", 0, 40)
-            number_of_wins = r1_col2.slider("승리수", 0, 40)
+            게임수 = r1_col1.slider("게임수", 0, 40)
+            승리수 = r1_col2.slider("승리수", 0, 40)
 
             predict_button = st.button("Predict")
 
