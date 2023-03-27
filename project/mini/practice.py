@@ -264,9 +264,9 @@ elif choice == "데이터페이지":
         st.write("머신러닝 모델입니다")
         option = st.selectbox(
         '원하는 차트를 골라주세요',
-        ('Chart1', 'Chart2', 'Chart3', 'chart4'))
+        ('Linear Regression', 'Random Forest', 'Decision Tree', 'XGBoost'))
 
-        if option == 'Chart1':
+        if option == 'Linear Regression':
             # 모델 불러오기
             model_path = "project/model.pkl"
             with open(model_path, 'rb') as f:
@@ -290,7 +290,7 @@ elif choice == "데이터페이지":
                 st.subheader('Prediction Result')
                 st.write('Y:', y[0])
 
-        elif option == 'Chart2':
+        elif option == 'Random Forest':
             # 모델 불러오기
             model_path = "project/RFmodel.pkl"
             with open(model_path, 'rb') as f:
@@ -335,7 +335,7 @@ elif choice == "데이터페이지":
             # if __name__ == '__main__':
             #     app()
 
-        elif option == 'chart3':
+        elif option == 'Decision Tree':
             model_path = "project/DecisionTree.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
@@ -343,7 +343,7 @@ elif choice == "데이터페이지":
                 st.title('DecisionTree')
         
 
-        elif option == 'chart4':
+        elif option == 'XGBoost':
             model_path = "project/XGBoost.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
