@@ -342,7 +342,7 @@ elif choice == "데이터페이지":
             model = joblib.load(model_path)
 
             st.title('XGBoost')
-            st.write("Games won by number of matches")
+            st.write("게임에 따른 승률")
 
             # first line
             r1_col1, r1_col2 = st.columns(2)
@@ -356,7 +356,7 @@ elif choice == "데이터페이지":
                 input_data = input_data.reshape(1, -1)
                 prediction = model.predict(input_data)[0]
                 prediction = round(prediction, 2)
-                st.write(f"Predicted number of games won: {prediction}")
+                st.write(f"예측한 승률: {prediction}")
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
