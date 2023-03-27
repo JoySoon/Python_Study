@@ -261,9 +261,9 @@ elif choice == "데이터페이지":
         if option == 'Chart1':
 
             # 모델 불러오기
-            model_path = f"{os.path.dirname(os.path.abspath(__file__))}/XGBoost.pkl"
+            model_path = "project/RFmodel.pkl"
             with open(model_path, 'rb') as f:
-                model = joblib.load(model_path)
+                model = pickle.load(f)
 
                 st.title('Linear Regression Model')
 
@@ -283,7 +283,7 @@ elif choice == "데이터페이지":
         elif option == 'Chart2':
 
             # 모델 불러오기
-            model_path = "mini/RFmodel.pkl"
+            model_path = "project/XGBoost.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
