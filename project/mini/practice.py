@@ -8,8 +8,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
 
-
-menu = ["메인페이지", "데이터페이지", "기타"]
+menu = ["메인페이지", "데이터페이지", "시뮬레이션"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
 
 if choice == "메인페이지":
@@ -258,93 +257,83 @@ elif choice == "데이터페이지":
 
         elif option == 'Chart':
             st.write("승률 데이터 계산입니다")
-
     with tab2:
         tab2.subheader("🦾 Machine Learning")
-
         st.write("머신러닝 모델입니다")
         option = st.selectbox(
         '원하는 차트를 골라주세요',
-        ('Linear Regression', 'Random Forest', 'Decision Tree', 'XGBoost'))
+        ('선형 회귀', '랜덤 포레스트', '결정 트리','XGBoost'))
 
-        if option == 'Linear Regression':
+        if option == '선형회귀':
             # 모델 불러오기
-            model_path = "project/model.pkl"
-            with open(model_path, 'rb') as f:
-                model = joblib.load(f)
+           # 랜덤 포레스트 모델 불러오기
+            model_path = "MH/LRmodel.pkl"
+            model = joblib.load(model_path)
 
-                st.title('Linear Regression Model')
+            st.write("LinearRegressor")
+            # 첫번째 행
+            r1_col1, r1_col2 = st.columns(2)
+            경기수 = r1_col1.slider("경기수", 0, 40)
+            승리수 = r1_col2.slider("승리수", 0, 40)
 
-                # create sidebar with input parameters
-                # st.sidebar.header('Input Parameters')
-                st.write('Input Parameters')
-                # x = st.sidebar.slider('X', 0.0, 10.0, 5.0, 0.1)
-                x = st.slider('X', 0.0, 1.0, 0.5, 0.01)
+            predict_button = st.button("예측")
 
-                # use model to make prediction
-                x = np.array([x]*77).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
-                y = model.predict(x)
-                y = y * 100
-                y = y.round(2)
+            if predict_button:
+                    variable1 = np.array([승리수, 경기수]*28)
+                    model1 = joblib.load('MH/LRmodel.pkl')
+                    pred1 = model1.predict([variable1])
+                    pred1 = pred1.round(2)
+                    st.metric("결과: ", pred1[0])
+        elif option == '랜덤 포레스트':
 
-                # show prediction result
-                st.subheader('Prediction Result')
-                st.write('Y:', y[0])
+            # 랜덤 포레스트 모델 불러오기
+            model_path = "MH/RFmodel.pkl"
+            model = joblib.load(model_path)
 
-        elif option == 'Random Forest':
-            # 모델 불러오기
-            model_path = "project/RFmodel.pkl"
-            with open(model_path, 'rb') as f:
-                model = joblib.load(f)
+            # Streamlit 앱 설정
+            st.title('Random Forest Model')
+            st.write('입력 변수')
 
-                st.title('Random Forest')
+            # 입력 변수를 위한 슬라이더 추가
+            x1 = st.slider('X1', 0.0, 1.0, 0.5, 0.01)
+            x2 = st.slider('X2', 0.0, 1.0, 0.5, 0.01)
+            x3 = st.slider('X3', 0.0, 1.0, 0.5, 0.01)
+            x4 = st.slider('X4', 0.0, 1.0, 0.5, 0.01)
 
-            # 입력된 데이터를 이용해 타겟 변수를 예측하는 함수를 정의합니다.
-            def predict(model, input_df):
-                predictions = model.predict(input_df)
-                return predictions
+            # 모델을 사용하여 예측 수행
+            x = np.array([x1, x2, x3, x4] * 19 + [x4]).reshape(1, -1)
 
-            # Streamlit 앱을 정의합니다.
-            def app():
-                # 앱 제목을 설정합니다.
-                st.title("Random Forest 모델 예측")
-                
-                # 데이터 업로드를 위한 사이드바를 만듭니다.
-                st.sidebar.title("데이터 업로드")
-                uploaded_file = st.sidebar.file_uploader("CSV 파일 선택", type="csv")
-                
-                # 사용자 입력 폼을 생성합니다.
-                st.sidebar.title("입력 특성")
-                sepal_length = st.sidebar.slider("꽃받침 길이", 4.0, 8.0, 5.0)
-                sepal_width = st.sidebar.slider("꽃받침 너비", 2.0, 4.5, 3.0)
-                petal_length = st.sidebar.slider("꽃잎 길이", 1.0, 7.0, 4.0)
-                petal_width = st.sidebar.slider("꽃잎 너비", 0.1, 2.5, 1.0)
-                
-                # 사용자 입력을 데이터프레임으로 결합합니다.
-                input_data = {'sepal_length': sepal_length,
-                            'sepal_width': sepal_width,
-                            'petal_length': petal_length,
-                            'petal_width': petal_width}
-                input_df = pd.DataFrame([input_data])
-                
-                # 모델을 이용해 예측합니다.
-                if st.sidebar.button("예측"):
-                    predictions = predict(model, input_df)
-                    st.write("예측된 타겟 변수 값은:", predictions[0])
-                
-            # Streamlit 앱을 실행합니다.
-            # if __name__ == '__main__':
-            #     app()
+            y = model.predict(x)[0]
 
-        elif option == 'Decision Tree':
-            model_path = "project/DecisionTree.pkl"
-            with open(model_path, 'rb') as f:
-                model = joblib.load(f)
+            # 예측 결과 출력
+            st.subheader('예측 결과')
+            st.write('Y:', y)
 
-                st.title('DecisionTree')
+        elif option == '결정 트리':
 
- 
-        
+            # 결정트리 모델 불러오기
+            model_path = "MH/DecisionTree.pkl"
+            model = joblib.load(model_path)
+
+            # Streamlit 앱 설정
+            st.title('결정트리 모델')
+            st.write('입력 변수')
+
+            # 입력 변수를 위한 슬라이더 추가
+            x1 = st.slider('X1', 0.0, 10.0, 0.5, 0.01)
+            x2 = st.slider('X2', 0.0, 1.0, 0.5, 0.01)
+
+            # 모델을 사용하여 예측 수행
+            # x = np.array([x1 * 77], [x2]).reshape(1, -1)
+            x = np.array([x1, x2] *38 + [x1]).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
+
+            y = model.predict(x)
+            y = y[0]
+
+            # 예측 결과 출력
+            st.subheader('예측 결과')
+            st.write('Y:', round(y, 2))
+
 
         elif option == 'XGBoost':
             model_path = "project/XGBoost.pkl"
@@ -353,13 +342,15 @@ elif choice == "데이터페이지":
 
                 st.title('XGBoost')
 
-                st.write("경기 수에 따른 ")
+                st.write("경기 수에 따른 승리 게임")
+
                 # 첫번째 행
                 r1_col1, r1_col2 = st.columns(2)
                 경기수 = r1_col1.slider("경기수", 0, 40)
                 승리수 = r1_col2.slider("승리수", 0, 40)
 
                 predict_button = st.button("예측")
+
 
                 if predict_button:
                     variable1 = np.array([승리수, 경기수])
@@ -371,8 +362,6 @@ elif choice == "데이터페이지":
                     pred1 = model1.predict(variable2)
                     pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
-
-
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
@@ -389,3 +378,62 @@ elif choice == "데이터페이지":
         > * 팀들의 스탯 별 레이더차트 비교
 
         '''
+
+elif choice == "시뮬레이션":
+
+    # tab0, tab1, tab2, tab3 = st.tabs(["첫 번째 선수", "첫 번째 선수", "첫 번째 선수", "첫 번째 선수"])
+    # players = []
+    
+    # with tab1:
+    #     tab1.subheader("첫 번째 선수")
+    
+    # i=1
+
+    # while False:
+    #     player={}
+    #     player["Shooting"] = st.slider("슈팅", min_value=1, max_value=10, value=1, key=f"shooting_1")
+    #     player["Dribbling"] = st.slider("드리블", min_value=1, max_value=10, value=1, key=f"Dribbling_1")
+    #     player["Passing"] = st.slider("패스", min_value=1, max_value=10, value=1, key=f"Passing_1")
+    #     player["Rebounding"] = st.slider("리바운드", min_value=1, max_value=10, value=1, key=f"Rebounding_1")
+    #     player["Defense"] = st.slider("수비", min_value=1, max_value=10, value=1, key=f"Defense_1")
+    #     player["Stamina"] = st.slider("스테미나", min_value=1, max_value=10, value=1, key=f"Stamina_1")
+
+    #     total_stats=player["Shooting"]+player["Dribbling"]+player["Passing"]+player["Rebounding"]+player["Defense"]+player["Stamina"]
+    #     if total_stats > 40:
+    #         st.warning("스텟 총합이 40을 넘을 수 없습니다.")
+    #     else:
+
+
+    # if st.button('저장'):
+    #     players.append(player)
+
+    # tabs = st.tabs([f"{i}번째 선수" for i in range(1, 6)])
+
+    cols = st.columns(5)
+    
+    player_keys = [
+        "shooting", "Dribbling", "Passing", "Rebounding", 'Defense', "Stamina"
+    ]
+
+    pl=pd.DataFrame(columns=player_keys, index=range(1,6))
+    
+    # for i, t in enumerate(tabs):
+    for i, c in enumerate(cols):
+        with c:
+            st.slider("슈팅", min_value=1, max_value=10, value=1, key=f"shooting_{i+1}")
+            st.slider("드리블", min_value=1, max_value=10, value=1, key=f"Dribbling_{i+1}")
+            st.slider("패스", min_value=1, max_value=10, value=1, key=f"Passing_{i+1}")
+            st.slider("리바운드", min_value=1, max_value=10, value=1, key=f"Rebounding_{i+1}")
+            st.slider("수비", min_value=1, max_value=10, value=1, key=f"Defense_{i+1}")
+            st.slider("스테미나", min_value=1, max_value=10, value=1, key=f"Stamina_{i+1}")
+            state = st.session_state
+            player = {
+                key: value for key, value in [(k, state[f'{k}_{i+1}']) for k in player_keys]
+            }
+            
+            for p in player_keys:           #i는 플레이어번호. p는 능력치
+                stat=state[f"{p}_{i+1}"]
+                st.write(f"{p} : {stat}")
+
+                #슈팅 : 슈팅_i
+            #데이터프레임에 선수 능력치 저장하깅
