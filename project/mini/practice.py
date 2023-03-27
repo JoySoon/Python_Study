@@ -7,8 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pickle
-import joblib
-import os
+import xgboost
 
 menu = ["메인페이지", "데이터페이지", "기타"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
