@@ -370,21 +370,19 @@ elif choice == "데이터페이지":
 
                 st.title('XGBoost')
 
-                # create sidebar with input parameters
-                # st.sidebar.header('Input Parameters')
-                st.write('Input Parameters')
-                # x = st.sidebar.slider('X', 0.0, 10.0, 5.0, 0.1)
-                x = st.slider('X', 0.0, 1.0, 0.5, 0.01)
+                # Streamlit app settings
+                st.write('입력 변수')
 
-                # use model to make prediction
-                x = np.array([x]*77).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
-                y = model.predict(x)
-                y = y * 100
-                y = y.round(2)
+                # Add sliders for input variables
+                x = st.slider('x', -50.0, 50.0, 0.0, 0.1)
 
-                # show prediction result
-                st.subheader('Prediction Result')
-                st.write('Y:', y[0])
+                # Use model to make prediction
+                x = np.array([x]).reshape(1, -1)  # reshape the input dimensions
+                odds = model.predict_proba(x)[0][1]  # probability of winning
+
+                # Output prediction result
+                st.subheader('예측 결과')
+                st.write(f'이 팀이 이길 확률: {odds:.2%}')
 
 
 
