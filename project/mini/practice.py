@@ -262,9 +262,9 @@ elif choice == "데이터페이지":
         st.write("머신러닝 모델입니다")
         option = st.selectbox(
         '원하는 차트를 골라주세요',
-        ('LinearRegressor', 'RandomForest', 'DecisionTree','XGBoost'))
+        ('LinearRegressor', 'RandomForest', 'DecisionTree', 'XGBoost'))
 
-        if option == '선형회귀':
+        if option == 'LinearRegressor':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
             model_path = "project/model.pkl"
@@ -284,6 +284,7 @@ elif choice == "데이터페이지":
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
+
         elif option == 'RandomForest':
 
             # 랜덤 포레스트 모델 불러오기
@@ -309,7 +310,7 @@ elif choice == "데이터페이지":
             st.subheader('예측 결과')
             st.write('Y:', y)
 
-        elif option == '결정 트리':
+        elif option == 'DecisionTree':
 
             # 결정트리 모델 불러오기
             model_path = "project/DecisionTree.pkl"
