@@ -353,7 +353,7 @@ elif choice == "데이터페이지":
 
                 st.title('XGBoost')
 
-                st.write("XGBoost")
+                st.write("경기 수에 따른 ")
                 # 첫번째 행
                 r1_col1, r1_col2 = st.columns(2)
                 경기수 = r1_col1.slider("경기수", 0, 40)
@@ -364,8 +364,9 @@ elif choice == "데이터페이지":
                 if predict_button:
                     variable1 = np.array([승리수, 경기수])
                     model1 = joblib.load('project/XGBoost.pkl')
-                    pred1 = model1.predict([variable1])
-                    pred1 = pred1.round(2)
+                    pred1 = [0]
+                    # pred1 = model1.predict([variable1])
+                    # pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
 
 
