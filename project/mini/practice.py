@@ -6,8 +6,8 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import pickle
 import joblib
+
 
 menu = ["메인페이지", "데이터페이지", "기타"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -271,7 +271,7 @@ elif choice == "데이터페이지":
             # 모델 불러오기
             model_path = "project/model.pkl"
             with open(model_path, 'rb') as f:
-                model = pickle.load(f)
+                model = joblib.load(f)
 
                 st.title('Linear Regression Model')
 
@@ -295,7 +295,7 @@ elif choice == "데이터페이지":
             # 모델 불러오기
             model_path = "project/RFmodel.pkl"
             with open(model_path, 'rb') as f:
-                model = pickle.load(f)
+                model = joblib.load(f)
 
                 st.title('Random Forest')
 
@@ -339,7 +339,7 @@ elif choice == "데이터페이지":
         elif option == 'Decision Tree':
             model_path = "project/DecisionTree.pkl"
             with open(model_path, 'rb') as f:
-                model = pickle.load(f)
+                model = joblib.load(f)
 
                 st.title('DecisionTree')
         
@@ -347,9 +347,27 @@ elif choice == "데이터페이지":
         elif option == 'XGBoost':
             model_path = "project/XGBoost.pkl"
             with open(model_path, 'rb') as f:
-                model = pickle.load(f)
+                model = joblib.load(f)
 
                 st.title('XGBoost')
+
+                # create sidebar with input parameters
+                # st.sidebar.header('Input Parameters')
+                st.write('Input Parameters')
+                # x = st.sidebar.slider('X', 0.0, 10.0, 5.0, 0.1)
+                x = st.slider('X', 0.0, 1.0, 0.5, 0.01)
+
+                # use model to make prediction
+                x = np.array([x]*77).reshape(1, -1)  # 입력값의 차원을 맞춰줍니다.
+                y = model.predict(x)
+                y = y * 100
+                y = y.round(2)
+
+                # show prediction result
+                st.subheader('Prediction Result')
+                st.write('Y:', y[0])
+
+
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
