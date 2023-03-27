@@ -257,12 +257,15 @@ elif choice == "데이터페이지":
 
         elif option == 'Chart':
             st.write("승률 데이터 계산입니다")
+
     with tab2:
         tab2.subheader("🦾 Machine Learning")
+
         st.write("머신러닝 모델입니다")
         option = st.selectbox(
         '원하는 차트를 골라주세요',
         ('Chart1', 'Chart2', 'Chart3', 'chart4'))
+
         if option == 'Chart1':
             # 모델 불러오기
             model_path = "project/model.pkl"
@@ -286,12 +289,14 @@ elif choice == "데이터페이지":
                 # show prediction result
                 st.subheader('Prediction Result')
                 st.write('Y:', y[0])
-        elif option == 'Chart2':
 
+        elif option == 'Chart2':
             # 모델 불러오기
             model_path = "project/RFmodel.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
+
+                st.title('Random Forest')
 
             # 입력된 데이터를 이용해 타겟 변수를 예측하는 함수를 정의합니다.
             def predict(model, input_df):
@@ -329,15 +334,14 @@ elif choice == "데이터페이지":
             # Streamlit 앱을 실행합니다.
             # if __name__ == '__main__':
             #     app()
-        elif option == 'chart3':
 
+        elif option == 'chart3':
             model_path = "project/DecisionTree.pkl"
             with open(model_path, 'rb') as f:
                 model = pickle.load(f)
 
                 st.title('DecisionTree')
         
-
 
         elif option == 'chart4':
             model_path = "project/XGBoost.pkl"
