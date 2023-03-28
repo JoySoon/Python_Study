@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
 import xgboost as xgb
-from xgboost import XGBRegressor
+import matplotlib.pyplot as plt
 
 menu = ["메인페이지", "데이터페이지", "시뮬레이션"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -371,16 +371,26 @@ elif choice == "데이터페이지":
             # 시각화 해보기
             st.subheader('시각화 부분')
 
-            X_train = model['X_train_xgb']
-            y_train = model['y_train_xgb']
-            X_test = model['X_test_xgb']
-            y_test = model['y_test_xgb']
+            # Visualize the decision tree
+            fig, ax = plt.subplots()
+            xgb.plot_tree(model, ax=ax)
+            st.pyplot(fig)
 
-            fig_xg = make_subplots(rows = 1, cols = 1, shared_xaxes = True)
-            fig_xg.add_trace(go.Scatter(x = y_train, y = y_test, mode = 'markers', name = 'Actual_xg'))
-            fig_xg.add_trace(go.Scatter(x = y_test, y = test_pred, mode = 'markers', name = 'Predict_xg'))
-            fig_xg.update_layout(title = '<b>actual과 predict 비교_xg')
-            st.plotly_chart(fig_xg, key = keys[2])
+            # Visualize feature importance
+            fig, ax = plt.subplots()
+            xgb.plot_importance(model, ax=ax)
+            st.pyplot(fig)
+
+            # X_train = model['X_train_xgb']
+            # y_train = model['y_train_xgb']
+            # X_test = model['X_test_xgb']
+            # y_test = model['y_test_xgb']
+
+            # fig_xg = make_subplots(rows = 1, cols = 1, shared_xaxes = True)
+            # fig_xg.add_trace(go.Scatter(x = y_train, y = y_test, mode = 'markers', name = 'Actual_xg'))
+            # fig_xg.add_trace(go.Scatter(x = y_test, y = test_pred, mode = 'markers', name = 'Predict_xg'))
+            # fig_xg.update_layout(title = '<b>actual과 predict 비교_xg')
+            # st.plotly_chart(fig_xg, key = keys[2])
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
