@@ -351,6 +351,7 @@ elif choice == "데이터페이지":
             # xgboost 모델 불러오기
             model_path = "project/XGBoost5.pkl"
             model = joblib.load(model_path)
+
             # 데이터 불러오기
             df = pd.read_csv('project/cbb_drop.csv')
             X = df.drop('P_V', axis=1) # 독립변수 (관측값, 피쳐)
@@ -361,6 +362,14 @@ elif choice == "데이터페이지":
             two_O = df['2P_O']
             three_O = df['3P_O']
 
+            fig = px.bar(
+                x=df.columns[:-1], 
+                y=model.feature_importances_, 
+                labels={'x': 'Feature', 'y': 'Importance'}
+                )
+            fig.update_layout(title="변수의 중요성", xaxis_title="변수", yaxis_title="중요성")
+
+            st.plotly_chart(fig)
 
             # 모델 불러오기
             # Load the XGBoost model
@@ -409,15 +418,6 @@ elif choice == "데이터페이지":
     
                 st.plotly_chart(fig)
             
-            fig = px.bar(
-                x=df.columns[:-1], 
-                y=model.feature_importances_, 
-                labels={'x': 'Feature', 'y': 'Importance'}
-                )
-            fig.update_layout(title="변수의 중요성", xaxis_title="변수", yaxis_title="중요성")
-
-            st.plotly_chart(fig)
-
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
