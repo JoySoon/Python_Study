@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
+import xgboost as xgb
 
 
 menu = ["메인페이지", "데이터페이지", "시뮬레이션"]
@@ -370,42 +371,31 @@ elif choice == "데이터페이지":
             # 시각화 해보기
             st.subheader('시각화 부분')
 
-            # 모델 불러오기
-            with open('project/XGBoost.pkl', 'rb') as f:
-                model = joblib.load(f)
-            st.write("구현한 XGBoost 모델 그래프입니다.")
+            # Load the XGBoost model from the pkl file
+            model = joblib.load('project/XGBoost.pkl')
 
-            # 예측값 계산
-            df['predicted'] = model.predict(X)
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            # 산점도 그리기
-            sns.set_style('darkgrid')
-            plt.figure(figsize=(8, 6))
-            plt.title('Linear Regression')
+            # Get the feature importances
+            importance = model.get_booster().get_score(importance_type='weight')
+            feature_importances = {feature: score for feature, score in importance.items()}
+            sorted_feature_importances = sorted(feature_importances.items(), key=lambda x: x[1], reverse=True)
 
-            sns.scatterplot(x = 'P_V', y='predicted', data=df)
-            st.pyplot()
+            # Create a bar chart of the feature importances using Plotly
+            fig = go.Figure(go.Bar(
+            x=[val[1] for val in sorted_feature_importances],
+            y=[val[0] for val in sorted_feature_importances],
+            orientation='h'))
 
-            # # Visualize the decision tree
-            # fig, ax = plt.subplots()
-            # xgb.plot_tree(model, ax=ax)
-            # st.pyplot(fig)
+fig.update_layout(
+    title="XGBoost Feature Importances",
+    xaxis_title="Feature Importance",
+    yaxis_title="Feature"
+)
 
-            # # Visualize feature importance
-            # fig, ax = plt.subplots()
-            # xgb.plot_importance(model, ax=ax)
-            # st.pyplot(fig)
+st.plotly_chart(fig)
 
-            # X_train = model['X_train_xgb']
-            # y_train = model['y_train_xgb']
-            # X_test = model['X_test_xgb']
-            # y_test = model['y_test_xgb']
 
-            # fig_xg = make_subplots(rows = 1, cols = 1, shared_xaxes = True)
-            # fig_xg.add_trace(go.Scatter(x = y_train, y = y_test, mode = 'markers', name = 'Actual_xg'))
-            # fig_xg.add_trace(go.Scatter(x = y_test, y = test_pred, mode = 'markers', name = 'Predict_xg'))
-            # fig_xg.update_layout(title = '<b>actual과 predict 비교_xg')
-            # st.plotly_chart(fig_xg, key = keys[2])
+
+
 
     with tab3:
         tab3.subheader("Streamlit 진행상태..")
