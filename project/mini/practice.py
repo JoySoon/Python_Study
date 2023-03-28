@@ -381,6 +381,7 @@ elif choice == "데이터페이지":
 
             # When the button is pressed, make the prediction and show the result
             if predict_button:
+
             # Create a DataFrame of the input variables
                 X = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
            
@@ -390,7 +391,7 @@ elif choice == "데이터페이지":
                 prediction = round(prediction*100, 2)
                 st.metric("승률 예측 결과: ", prediction)
 
-                # Create a Plotly gauge chart to display the prediction
+                # 예측 결과를 그래프한 결과
                 fig = go.Figure(go.Indicator(
                 mode = "gauge+number",
                 value = prediction,
@@ -407,6 +408,15 @@ elif choice == "데이터페이지":
                             xaxis={'visible': False}, yaxis={'visible': False})
     
                 st.plotly_chart(fig)
+            
+            fig = px.bar(
+                x=df.columns[:-1], 
+                y=model.feature_importances_, 
+                labels={'x': 'Feature', 'y': 'Importance'}
+                )
+            fig.update_layout(title="변수의 중요성", xaxis_title="변수", yaxis_title="중요성")
+
+            st.plotly_chart(fig)
 
 
     with tab3:
