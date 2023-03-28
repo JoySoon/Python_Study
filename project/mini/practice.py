@@ -276,7 +276,7 @@ elif choice == "데이터페이지":
         if option == 'LinearRegressor':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
-            model_path = "mini/LRmodel.pkl"
+            model_path = "project/LRmodel.pkl"
             model = joblib.load(model_path)
 
             st.write("LinearRegressor")
@@ -297,7 +297,7 @@ elif choice == "데이터페이지":
         elif option == 'RandomForest':
 
             # 랜덤 포레스트 모델 불러오기
-            model_path = "mini/RFmodel.pkl"
+            model_path = "project/RFmodel.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -322,7 +322,7 @@ elif choice == "데이터페이지":
         elif option == 'DecisionTree':
 
             # 결정트리 모델 불러오기
-            model_path = "mini/DecisionTree.pkl"
+            model_path = "project/DecisionTree.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -347,7 +347,7 @@ elif choice == "데이터페이지":
 
         elif option == 'XGBoost':
 
-            model_path = "mini/XGBoost.pkl"
+            model_path = "project/XGBoost.pkl"
             model = joblib.load(model_path)
 
             st.title('XGBoost')
