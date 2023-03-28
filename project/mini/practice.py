@@ -7,8 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
-import xgboost as xgb
-import matplotlib.pyplot as plt
+
 
 menu = ["메인페이지", "데이터페이지", "시뮬레이션"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -371,15 +370,31 @@ elif choice == "데이터페이지":
             # 시각화 해보기
             st.subheader('시각화 부분')
 
-            # Visualize the decision tree
-            fig, ax = plt.subplots()
-            xgb.plot_tree(model, ax=ax)
-            st.pyplot(fig)
+            # 모델 불러오기
+            with open('project/XGBoost.pkl', 'rb') as f:
+                model = joblib.load(f)
+            st.write("구현한 XGBoost 모델 그래프입니다.")
 
-            # Visualize feature importance
-            fig, ax = plt.subplots()
-            xgb.plot_importance(model, ax=ax)
-            st.pyplot(fig)
+            # 예측값 계산
+            df['predicted'] = model.predict(X)
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            # 산점도 그리기
+            sns.set_style('darkgrid')
+            plt.figure(figsize=(8, 6))
+            plt.title('Linear Regression')
+
+            sns.scatterplot(x = 'P_V', y='predicted', data=df)
+            st.pyplot()
+
+            # # Visualize the decision tree
+            # fig, ax = plt.subplots()
+            # xgb.plot_tree(model, ax=ax)
+            # st.pyplot(fig)
+
+            # # Visualize feature importance
+            # fig, ax = plt.subplots()
+            # xgb.plot_importance(model, ax=ax)
+            # st.pyplot(fig)
 
             # X_train = model['X_train_xgb']
             # y_train = model['y_train_xgb']
