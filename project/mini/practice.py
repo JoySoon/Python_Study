@@ -382,14 +382,14 @@ elif choice == "데이터페이지":
             # When the button is pressed, make the prediction and show the result
             if predict_button:
             # Create a DataFrame of the input variables
-            X = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
+                X = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
            
     
-            # Load the XGBoost model and make the prediction
-            model = joblib.load('project/XGBoost5.pkl')
-            prediction = model.predict(X)[0]
-            prediction = round(prediction*100, 2)
-            st.metric("Odds prediction result: ", prediction)
+                # Load the XGBoost model and make the prediction
+                model = joblib.load('project/XGBoost5.pkl')
+                prediction = model.predict(X)[0]
+                prediction = round(prediction*100, 2)
+                st.metric("Odds prediction result: ", prediction)
 
 
 
