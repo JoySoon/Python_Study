@@ -366,7 +366,7 @@ elif choice == "데이터페이지":
             '원하는 XGb를 골라주세요',
             ('fig1', 'fig2'))
 
-                if option == 'fig1'
+                if option == 'fig1':
 
                     # 전체
                     fig = px.bar(
@@ -385,7 +385,7 @@ elif choice == "데이터페이지":
 
                     st.plotly_chart(fig)
 
-                elif option == 'fig2'
+                elif option == 'fig2':
                     # 세부
                     fig = px.bar(
                         x=df.columns[:-1], 
