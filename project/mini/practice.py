@@ -370,6 +370,11 @@ elif choice == "데이터페이지":
             # 시각화 해보기
             st.subheader('시각화 부분')
 
+            X_train = model['X_train_xgb']
+            y_train = model['y_train_xgb']
+            X_test = model['X_test_xgb']
+            y_test = model['y_test_xgb']
+
             fig_xg = make_subplots(rows = 1, cols = 1, shared_xaxes = True)
             fig_xg.add_trace(go.Scatter(x = y_train, y = y_test, mode = 'markers', name = 'Actual_xg'))
             fig_xg.add_trace(go.Scatter(x = y_test, y = test_pred, mode = 'markers', name = 'Predict_xg'))
