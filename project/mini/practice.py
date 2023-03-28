@@ -363,10 +363,10 @@ elif choice == "데이터페이지":
             three_O = df['3P_O']
 
             option = st.selectbox(
-            '원하는 XGb를 골라주세요',
-            ('fig1', 'fig2'))
+            '원하는 시각화 결과값을 골라주세요',
+            ('전체', '세부'))
 
-            if option == 'fig1':
+            if option == '전체':
 
                 # 전체
                 fig = px.bar(
@@ -384,7 +384,7 @@ elif choice == "데이터페이지":
                     )
 
 
-            elif option == 'fig2':
+            elif option == '세부':
                 # 세부
                 fig = px.bar(
                     x=df.columns[:-1], 
