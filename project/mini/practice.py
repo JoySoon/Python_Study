@@ -379,6 +379,7 @@ elif choice == "데이터페이지":
             if predict_button:
                     predicted = model.predict(X)
                     variable1 = np.array([G, W, ORB, FTR, two_O, three_O])
+                    st.write(variable1)
                     model1 = joblib.load('project/XGBoost5.pkl')
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(4)
