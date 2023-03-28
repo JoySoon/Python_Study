@@ -288,7 +288,7 @@ elif choice == "데이터페이지":
             predict_button = st.button("예측")
 
             if predict_button:
-                    variable1 = np.array([승리수, 경기수] * 38 + [승리수])
+                    variable1 = np.array([승리수, 경기수] * 77 + [승리수])
                     model1 = joblib.load('project/LRmodel.pkl')
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(2)
