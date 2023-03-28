@@ -349,7 +349,7 @@ elif choice == "데이터페이지":
         elif option == 'XGBoost':
 
             # xgboost 모델 불러오기
-            model_path = "project/XGBoost_2.pkl"
+            model_path = "project/XGBoostN.pkl"
             model = joblib.load(model_path)
             # 데이터 불러오기
             df = pd.read_csv('project/cbb_drop.csv')
@@ -363,7 +363,7 @@ elif choice == "데이터페이지":
 
 
             # 모델 불러오기
-            with open('project/XGBoost_2.pkl', 'rb') as f:
+            with open('project/XGBoostN.pkl', 'rb') as f:
                 model = joblib.load(f)
             # 첫번째 행
             col1, col2, col3, col4, col5, col6  = st.columns(6)
@@ -379,7 +379,7 @@ elif choice == "데이터페이지":
             if predict_button:
                     predicted = model.predict(X)
                     variable1 = np.array([G, W, ORB, FTR, two_O, three_O])
-                    model1 = joblib.load('project/XGBoost_2.pkl')
+                    model1 = joblib.load('project/XGBoostN.pkl')
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(4)
                     st.metric("승률 예측 결과: ", pred1[0]*100)
