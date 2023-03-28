@@ -367,7 +367,14 @@ elif choice == "데이터페이지":
                 y=model.feature_importances_, 
                 labels={'x': '변수', 'y': '중요도'}
                 )
-            fig.update_layout(title="중요 변수 확인", xaxis_title="변수", yaxis_title="중요도", width=800, height=600)
+            fig.update_layout(
+                title="중요 변수 확인", 
+                xaxis_title="변수", 
+                yaxis_title="중요도", 
+                yaxis_range=[0, 0.2]
+                width=800, 
+                height=600,
+                )
 
             st.plotly_chart(fig)
 
