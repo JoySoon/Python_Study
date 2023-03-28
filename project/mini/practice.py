@@ -374,22 +374,33 @@ elif choice == "데이터페이지":
             # Load the XGBoost model from the pkl file
             model = joblib.load('project/XGBoost.pkl')
 
-            # Get the feature importances
             importance = model.get_booster().get_score(importance_type='weight')
             feature_importances = {feature: score for feature, score in importance.items()}
             sorted_feature_importances = sorted(feature_importances.items(), key=lambda x: x[1], reverse=True)
 
-            # Create a bar chart of the feature importances using Plotly
+            # Plotly를 사용하여 특성 중요도를 막대그래프로 시각화합니다.
             fig = go.Figure(go.Bar(
-            x=[val[1] for val in sorted_feature_importances],
-            y=[val[0] for val in sorted_feature_importances],
-            orientation='h'))
+                x=[val[1] for val in sorted_feature_importances],
+                y=[val[0] for val in sorted_feature_importances],
+                orientation='h',
+                marker=dict(color='rgb(158,202,225)',
+                        line=dict(color='rgb(8,48,107)',width=1.5)),
+                opacity=0.6))
 
             fig.update_layout(
-            title="XGBoost 각 유형마다 중요도",
-            xaxis_title="유형의 중요도",
-            yaxis_title="유형"
-            )
+                title={
+                    'text': "XGBoost 특성 중요도",
+                    'y':0.9,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'},
+                xaxis_title={
+                    'text': "특성 중요도",
+                    'font': {'size': 14}},
+                yaxis_title={
+                    'text': "특성",
+                    'font': {'size': 14}},
+                font=dict(size=14))
 
             st.plotly_chart(fig)
 
