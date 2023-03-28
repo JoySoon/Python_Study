@@ -383,7 +383,6 @@ elif choice == "데이터페이지":
                     height=600
                     )
 
-              
 
             elif option == 'fig2':
                 # 세부
@@ -397,7 +396,7 @@ elif choice == "데이터페이지":
                     title="중요 변수 확인(세부)", 
                     xaxis_title="변수", 
                     yaxis_title="중요도", 
-                    yaxis_range=[0, 0.025],
+                    yaxis_range=[0, 0.005],
                     width=800, 
                     height=600
                     )
