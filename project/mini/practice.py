@@ -371,8 +371,8 @@ elif choice == "데이터페이지":
             st.subheader('시각화 부분')
 
             fig_xg = make_subplots(rows = 1, cols = 1, shared_xaxes = True)
-            fig_xg.add_trace(go.Scatter(x = y_train_xgb, y = y_test_xgb, mode = 'markers', name = 'Actual_xg'))
-            fig_xg.add_trace(go.Scatter(x = y_test_xgb, y = test_pred_xgb, mode = 'markers', name = 'Predict_xg'))
+            fig_xg.add_trace(go.Scatter(x = y_train, y = y_test, mode = 'markers', name = 'Actual_xg'))
+            fig_xg.add_trace(go.Scatter(x = y_test, y = test_pred, mode = 'markers', name = 'Predict_xg'))
             fig_xg.update_layout(title = '<b>actual과 predict 비교_xg')
             st.plotly_chart(fig_xg, key = keys[2])
 
