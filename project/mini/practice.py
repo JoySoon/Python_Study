@@ -391,6 +391,15 @@ elif choice == "데이터페이지":
                 prediction = round(prediction*100, 2)
                 st.metric("Odds prediction result: ", prediction)
 
+                    # Visualize the prediction result using a bar chart
+                labels = ['Predicted Odds']
+                values = [prediction]
+                fig, ax = plt.subplots()
+                sns.barplot(x=labels, y=values, ax=ax)
+                ax.set_title('Odds Prediction Result')
+                ax.set_xlabel('Prediction')
+                ax.set_ylabel('Value')
+                st.pyplot(fig)
 
 
 
