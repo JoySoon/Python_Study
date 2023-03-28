@@ -403,11 +403,10 @@ elif choice == "데이터페이지":
                         'bar': {'color': "black"}}))
     
                 # Add title and labels to the chart
-                fig.update_layout(title={'text': 'Odds Prediction Result', 'y':0.95, 'x':0.5},
+                fig.update_layout(title={'text': '승률 예측 결과', 'y':0.95, 'x':0.5},
                             xaxis={'visible': False}, yaxis={'visible': False})
     
                 st.plotly_chart(fig)
-
 
 
     with tab3:
