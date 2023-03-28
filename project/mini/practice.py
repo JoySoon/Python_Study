@@ -385,16 +385,13 @@ elif choice == "데이터페이지":
             y=[val[0] for val in sorted_feature_importances],
             orientation='h'))
 
-fig.update_layout(
-    title="XGBoost Feature Importances",
-    xaxis_title="Feature Importance",
-    yaxis_title="Feature"
-)
+            fig.update_layout(
+            title="XGBoost Feature Importances",
+            xaxis_title="Feature Importance",
+            yaxis_title="Feature"
+            )
 
-st.plotly_chart(fig)
-
-
-
+            st.plotly_chart(fig)
 
 
     with tab3:
