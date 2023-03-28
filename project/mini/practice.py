@@ -298,7 +298,7 @@ elif choice == "데이터페이지":
         elif option == 'RandomForest':
 
             # 랜덤 포레스트 모델 불러오기
-            model_path = "project/RFmodel.pkl"
+            model_path = "project/RFmodel_drop.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -323,7 +323,7 @@ elif choice == "데이터페이지":
         elif option == 'DecisionTree':
 
             # 결정트리 모델 불러오기
-            model_path = "project/DecisionTree.pkl"
+            model_path = "project/DecisionTree1.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -348,7 +348,7 @@ elif choice == "데이터페이지":
 
         elif option == 'XGBoost':
 
-            model_path = "project/XGBoost.pkl"
+            model_path = "project/XGBoost_2.pkl"
             model = joblib.load(model_path)
 
             st.title('XGBoost')
@@ -372,7 +372,7 @@ elif choice == "데이터페이지":
             st.subheader('시각화 부분')
 
             # Load the XGBoost model from the pkl file
-            model = joblib.load('project/XGBoost.pkl')
+            model = joblib.load(model_path)
 
             importance = model.get_booster().get_score(importance_type='weight')
             feature_importances = {feature: score for feature, score in importance.items()}
