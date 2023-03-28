@@ -386,9 +386,9 @@ elif choice == "데이터페이지":
             orientation='h'))
 
             fig.update_layout(
-            title="XGBoost Feature Importances",
-            xaxis_title="Feature Importance",
-            yaxis_title="Feature"
+            title="XGBoost 각 유형마다 중요도",
+            xaxis_title="유형의 중요도",
+            yaxis_title="유형"
             )
 
             st.plotly_chart(fig)
