@@ -363,70 +363,35 @@ elif choice == "데이터페이지":
 
 
             # 모델 불러오기
+            # Load the XGBoost model
             with open('project/XGBoost5.pkl', 'rb') as f:
                 model = joblib.load(f)
-            # 첫번째 행
-            col1, col2, col3, col4, col5, col6  = st.columns(6)
-            G = col1.slider("경기수", 0, 40)
-            W = col2.slider("승리수", 0, 40)
-            ORB = col3.slider("리바운드 수치", 0, 50)
-            FTR = col4.slider("자유투 수치", 0, 50)
-            two_O = col5.slider("2점슛 수치", 0, 50)
-            three_O = col6.slider("3점슛 수치", 0, 30)
-            
-            predict_button = st.button("예측")
 
+            # Create sliders for input variables
+            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            G = col1.slider("Number of matches", 0, 40)
+            W = col2.slider("Number of wins", 0, 40)
+            ORB = col3.slider("Rebound number", 0, 50)
+            FTR = col4.slider("Free throw number", 0, 50)
+            two_O = col5.slider("2-point shot number", 0, 50)
+            three_O = col6.slider("3-point shot number", 0, 30)
+
+            # Create a button to trigger the prediction
+            predict_button = st.button("Predict")
+
+            # When the button is pressed, make the prediction and show the result
             if predict_button:
-                    predicted = model.predict(X)
-                    # variable1 = np.array([G, W, ORB, FTR, two_O, three_O])
-                    variable1 = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
-                    # st.write(variable1)
-                    model1 = joblib.load('project/XGBoost5.pkl')
-                    # pred1 = model1.predict([variable1])
-                    pred1 = model1.predict(variable1)
-                    pred1 = pred1.round(4)
-                    st.metric("승률 예측 결과: ", pred1[0]*100)
+            # Create a DataFrame of the input variables
+            X = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
+           
+    
+            # Load the XGBoost model and make the prediction
+            model = joblib.load('project/XGBoost5.pkl')
+            prediction = model.predict(X)[0]
+            prediction = round(prediction*100, 2)
+            st.metric("Odds prediction result: ", prediction)
 
-            # # 시각화 해보기
-            # st.subheader('시각화 부분')
 
-            # # 특성 중요도를 가져옵니다.
-            # importance = model.get_booster().get_score(importance_type='weight')
-            # feature_importances = {feature: score for feature, score in importance.items()}
-
-            # # 모든 특성의 중요도 값을 0으로 초기화합니다.
-            # for feature in model.get_booster().feature_names:
-            #     if feature not in feature_importances:
-            #         feature_importances[feature] = 0
-        
-            # # 중요도 값에 따라 특성을 정렬합니다.
-            # sorted_feature_importances = sorted(feature_importances.items(), key=lambda x: x[1], reverse=True)
-
-            # # Plotly를 사용하여 특성 중요도를 막대그래프로 시각화합니다.
-            # fig = go.Figure(go.Bar(
-            #         x=[val[1] for val in sorted_feature_importances],
-            #         y=[val[0] for val in sorted_feature_importances],
-            #         orientation='h',
-            #         marker=dict(color='rgb(158,202,225)',
-            #         line=dict(color='rgb(8,48,107)',width=1.5)),
-            #         pacity=0.6))
-
-            # fig.update_layout(
-            #     title={
-            #         'text': "XGBoost 특성 중요도",
-            #         'y':0.9,
-            #         'x':0.5,
-            #         'xanchor': 'center',
-            #         'yanchor': 'top'},
-            #     xaxis_title={
-            #         'text': "특성 중요도",
-            #         'font': {'size': 14}},
-            #     yaxis_title={
-            #         'text': "특성",
-            #         'font': {'size': 14}},
-            #     font=dict(size=14))
-
-            # st.plotly_chart(fig)
 
 
     with tab3:
