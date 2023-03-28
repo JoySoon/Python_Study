@@ -277,7 +277,7 @@ elif choice == "데이터페이지":
         if option == 'LinearRegressor':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
-            model_path = "project/LRmodel.pkl"
+            model_path = "project/LRmodel_.pkl"
             model = joblib.load(model_path)
 
             st.write("LinearRegressor")
@@ -362,7 +362,7 @@ elif choice == "데이터페이지":
             predict_button = st.button("예측")
 
             if predict_button:
-                input_data = np.array([승리수, 경기수]*38 + [경기수])
+                input_data = np.array([승리수, 경기수]*3)
                 input_data = input_data.reshape(1, -1)
                 prediction = model.predict(input_data)[0]
                 prediction = round(prediction, 2)
