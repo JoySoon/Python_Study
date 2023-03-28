@@ -363,13 +363,13 @@ elif choice == "데이터페이지":
             three_O = df['3P_O']
 
             # 전체
-            fig = px.bar(
+            fig1 = px.bar(
                 x=df.columns[:-1], 
                 y=model.feature_importances_, 
                 labels={'x': '변수', 'y': '중요도'}
                 )
 
-            fig.update_layout(
+            fig1.update_layout(
                 title="중요 변수 확인(전체)", 
                 xaxis_title="변수", 
                 yaxis_title="중요도", 
@@ -378,13 +378,13 @@ elif choice == "데이터페이지":
                 )
 
             # 세부
-            fig = px.bar(
+            fig2 = px.bar(
                 x=df.columns[:-1], 
                 y=model.feature_importances_, 
                 labels={'x': '변수', 'y': '중요도'}
                 )
 
-            fig.update_layout(
+            fig2.update_layout(
                 title="중요 변수 확인(세부)", 
                 xaxis_title="변수", 
                 yaxis_title="중요도", 
