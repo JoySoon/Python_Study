@@ -348,25 +348,41 @@ elif choice == "데이터페이지":
 
         elif option == 'XGBoost':
 
+            # xgboost 모델 불러오기
             model_path = "project/XGBoost_2.pkl"
             model = joblib.load(model_path)
+            # 데이터 불러오기
+            df = pd.read_csv('project/cbb_drop.csv')
+            X = df.drop('P_V', axis=1) # 독립변수 (관측값, 피쳐)
+            G = df['G']
+            W = df['W']
+            ORB = df['ORB']
+            FTR = df['FTR']
+            two_O = df['2P_O']
+            three_O = df['3P_O']
 
-            st.title('XGBoost')
-            st.write("경기수에 따른 승리 게임")
 
-            # first line
-            r1_col1, r1_col2 = st.columns(2)
-            경기수 = r1_col1.slider("경기수", 0, 40)
-            승리수 = r1_col2.slider("승리수", 0, 40)
-
+            # 모델 불러오기
+            with open('project/XGBoost_2.pkl', 'rb') as f:
+                model = joblib.load(f)
+            # 첫번째 행
+            col1, col2, col3, col4, col5, col6  = st.columns(6)
+            G = col1.slider("경기수", 0, 40)
+            W = col2.slider("승리수", 0, 40)
+            ORB = col3.slider("리바운드 수치", 0, 50)
+            FTR = col4.slider("자유투 수치", 0, 50)
+            two_O = col5.slider("2점슛 수치", 0, 50)
+            three_O = col6.slider("3점슛 수치", 0, 30)
+            
             predict_button = st.button("예측")
 
             if predict_button:
-                input_data = np.array([승리수, 경기수]*3)
-                input_data = input_data.reshape(1, -1)
-                prediction = model.predict(input_data)[0]
-                prediction = round(prediction, 2)
-                st.write(f"예측한 승률: {prediction}")
+                    predicted = model.predict(X)
+                    variable1 = np.array([G, W, ORB, FTR, two_O, three_O])
+                    model1 = joblib.load('project/XGBoost_2.pkl')
+                    pred1 = model1.predict([variable1])
+                    pred1 = pred1.round(4)
+                    st.metric("승률 예측 결과: ", pred1[0]*100)
 
             # 시각화 해보기
             st.subheader('시각화 부분')
