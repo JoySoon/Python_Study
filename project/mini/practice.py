@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
+import xgboost as xgb
 
 menu = ["메인페이지", "데이터페이지", "시뮬레이션"]
 choice = st.sidebar.selectbox("메뉴를 선택해주세요", menu)
@@ -107,8 +108,16 @@ if choice == "메인페이지":
         * College Basketball Dataset
         > [![Colab](https://img.shields.io/badge/kaggle-College%20Basketball%20Dataset-skyblue)](https://www.kaggle.com/datasets/andrewsundberg/college-basketball-dataset)
         
-        * colab링크1[제목]
+        * colab 전처리 데이터 링크
         > [![Colab](https://img.shields.io/badge/colab-Data%20preprocessing-yellow)](https://colab.research.google.com/drive/1qTboYP4Pa73isvE4Lt3l5XYLaIhX9Tix?usp=sharing) 
+        * colab 선형 회귀 모델링 데이터 링크
+        > [![Colab](https://img.shields.io/badge/colab-Line%20Regression-yellow)](https://colab.research.google.com/drive/1bK8x_1Cich78Mf_6hdFcPp1U01d4RjMv?usp=sharing) 
+        * colab 랜덤 포레스트 모델링 데이터 링크
+        > [![Colab](https://img.shields.io/badge/colab-Random%20Forest-yellow)](https://colab.research.google.com/drive/1E5AzXyJoulVY-12rxmJjBphqOwf4kpNF?usp=sharing) 
+        * colab 결정트리 모델링 데이터 링크
+        > [![Colab](https://img.shields.io/badge/colab-Decision%20Tree-yellow)](https://colab.research.google.com/drive/1l059OKEqqQkLu9N6RVd-KpjHDcHQI7eX?usp=sharing) 
+        * colab XG Boost 모델링 데이터 링크
+        > [![Colab](https://img.shields.io/badge/colab-XG%20Boost-yellow)](https://colab.research.google.com/drive/1yF3dcXCYfcFHVDmOUq1RO-tDxqtajA22?usp=sharing) 
         '''
 
 elif choice == "데이터페이지":
@@ -267,7 +276,7 @@ elif choice == "데이터페이지":
         if option == 'LinearRegressor':
             # 모델 불러오기
            # 랜덤 포레스트 모델 불러오기
-            model_path = "project/model.pkl"
+            model_path = "mini/LRmodel.pkl"
             model = joblib.load(model_path)
 
             st.write("LinearRegressor")
@@ -280,7 +289,7 @@ elif choice == "데이터페이지":
 
             if predict_button:
                     variable1 = np.array([승리수, 경기수]*38 + [경기수])
-                    model1 = joblib.load('project/model.pkl')
+                    model1 = joblib.load('MH/LRmodel.pkl')
                     pred1 = model1.predict([variable1])
                     pred1 = pred1.round(2)
                     st.metric("결과: ", pred1[0])
@@ -288,7 +297,7 @@ elif choice == "데이터페이지":
         elif option == 'RandomForest':
 
             # 랜덤 포레스트 모델 불러오기
-            model_path = "project/RFmodel.pkl"
+            model_path = "mini/RFmodel.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -313,7 +322,7 @@ elif choice == "데이터페이지":
         elif option == 'DecisionTree':
 
             # 결정트리 모델 불러오기
-            model_path = "project/DecisionTree.pkl"
+            model_path = "mini/DecisionTree.pkl"
             model = joblib.load(model_path)
 
             # Streamlit 앱 설정
@@ -338,7 +347,7 @@ elif choice == "데이터페이지":
 
         elif option == 'XGBoost':
 
-            model_path = "project/XGBoost.pkl"
+            model_path = "mini/XGBoost.pkl"
             model = joblib.load(model_path)
 
             st.title('XGBoost')
@@ -411,8 +420,13 @@ elif choice == "시뮬레이션":
     ]
 
     pl=pd.DataFrame(columns=player_keys, index=range(1,6))
-    
     # for i, t in enumerate(tabs):
+    url='https://raw.githubusercontent.com/whataLIN/sportsTOoTOo/main/Basketball_processing.csv'
+    df = pd.read_csv(url)
+
+    conf_list=list(df['CONF'].unique())
+    team_conf= st.selectbox('참가할 대회를 선택해주세요.', options=conf_list)
+
     for i, c in enumerate(cols):
         with c:
             st.slider("슈팅", min_value=1, max_value=10, value=1, key=f"shooting_{i+1}")
@@ -430,5 +444,17 @@ elif choice == "시뮬레이션":
                 stat=state[f"{p}_{i+1}"]
                 st.write(f"{p} : {stat}")
 
+            pl.loc[i+1] = player
+
+    
+    tdf = df.drop(['TEAM', 'YEAR','W','G'], axis=1).copy()
+    max_values = [tdf[i].max() for i in tdf.columns]
+
+    
+
+
+    # st.write(pl)
+
                 #슈팅 : 슈팅_i
             #데이터프레임에 선수 능력치 저장하깅
+    
