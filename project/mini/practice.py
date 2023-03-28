@@ -362,38 +362,47 @@ elif choice == "데이터페이지":
             two_O = df['2P_O']
             three_O = df['3P_O']
 
-            # 전체
-            fig1 = px.bar(
-                x=df.columns[:-1], 
-                y=model.feature_importances_, 
-                labels={'x': '변수', 'y': '중요도'}
-                )
+            option = st.selectbox(
+            '원하는 XGb를 골라주세요',
+            ('fig1', 'fig2'))
 
-            fig1.update_layout(
-                title="중요 변수 확인(전체)", 
-                xaxis_title="변수", 
-                yaxis_title="중요도", 
-                width=800, 
-                height=600
-                )
+            if option == 'fig1'
 
-            # 세부
-            fig2 = px.bar(
-                x=df.columns[:-1], 
-                y=model.feature_importances_, 
-                labels={'x': '변수', 'y': '중요도'}
-                )
+                # 전체
+                fig = px.bar(
+                    x=df.columns[:-1], 
+                    y=model.feature_importances_, 
+                    labels={'x': '변수', 'y': '중요도'}
+                    )
 
-            fig2.update_layout(
-                title="중요 변수 확인(세부)", 
-                xaxis_title="변수", 
-                yaxis_title="중요도", 
-                yaxis_range=[0, 0.025],
-                width=800, 
-                height=600
-                )
+                fig.update_layout(
+                    title="중요 변수 확인(전체)", 
+                    xaxis_title="변수", 
+                    yaxis_title="중요도", 
+                    width=800, 
+                    height=600
+                    )
+                    
+                st.plotly_chart(fig)
 
-            st.plotly_chart(fig)
+            elif option == 'fig2'
+                # 세부
+                fig = px.bar(
+                    x=df.columns[:-1], 
+                    y=model.feature_importances_, 
+                    labels={'x': '변수', 'y': '중요도'}
+                    )
+
+                fig.update_layout(
+                    title="중요 변수 확인(세부)", 
+                    xaxis_title="변수", 
+                    yaxis_title="중요도", 
+                    yaxis_range=[0, 0.025],
+                    width=800, 
+                    height=600
+                    )
+
+                st.plotly_chart(fig)
 
             # 모델 불러오기
             # Load the XGBoost model
