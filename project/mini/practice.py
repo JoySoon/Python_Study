@@ -369,37 +369,44 @@ elif choice == "데이터페이지":
 
             # Create sliders for input variables
             col1, col2, col3, col4, col5, col6 = st.columns(6)
-            G = col1.slider("Number of matches", 0, 40)
-            W = col2.slider("Number of wins", 0, 40)
-            ORB = col3.slider("Rebound number", 0, 50)
-            FTR = col4.slider("Free throw number", 0, 50)
-            two_O = col5.slider("2-point shot number", 0, 50)
-            three_O = col6.slider("3-point shot number", 0, 30)
+            G = col1.slider("경기수", 0, 40)
+            W = col2.slider("승리수", 0, 40)
+            ORB = col3.slider("리바운드 수치", 0, 50)
+            FTR = col4.slider("자유투 수치", 0, 50)
+            two_O = col5.slider("2점슛 수치", 0, 50)
+            three_O = col6.slider("3점슛 수치", 0, 30)
 
             # Create a button to trigger the prediction
-            predict_button = st.button("Predict")
+            predict_button = st.button("예측")
 
             # When the button is pressed, make the prediction and show the result
             if predict_button:
             # Create a DataFrame of the input variables
                 X = pd.DataFrame([[G, W, ORB, FTR, two_O, three_O]], columns=['G', 'W', 'ORB', 'FTR', '2P_O', '3P_O'])
            
-    
                 # Load the XGBoost model and make the prediction
                 model = joblib.load('project/XGBoost5.pkl')
                 prediction = model.predict(X)[0]
                 prediction = round(prediction*100, 2)
-                st.metric("Odds prediction result: ", prediction)
+                st.metric("승률 예측 결과: ", prediction)
 
-                    # Visualize the prediction result using a bar chart
-                labels = ['Predicted Odds']
-                values = [prediction]
-                fig, ax = plt.subplots()
-                sns.barplot(x=labels, y=values, ax=ax)
-                ax.set_title('Odds Prediction Result')
-                ax.set_xlabel('Prediction')
-                ax.set_ylabel('Value')
-                st.pyplot(fig)
+                # Create a Plotly gauge chart to display the prediction
+                fig = go.Figure(go.Indicator(
+                mode = "gauge+number",
+                value = prediction,
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                gauge = {'axis': {'range': [0, 100]},
+                        'steps' : [{'range': [0, 25], 'color': "lightgray"},
+                                {'range': [25, 50], 'color': "gray"},
+                                {'range': [50, 75], 'color': "lightgray"},
+                                {'range': [75, 100], 'color': "gray"}],
+                        'bar': {'color': "black"}}))
+    
+                # Add title and labels to the chart
+                fig.update_layout(title={'text': 'Odds Prediction Result', 'y':0.95, 'x':0.5},
+                            xaxis={'visible': False}, yaxis={'visible': False})
+    
+                st.plotly_chart(fig)
 
 
 
