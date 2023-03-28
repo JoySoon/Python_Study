@@ -387,46 +387,46 @@ elif choice == "데이터페이지":
                     pred1 = pred1.round(4)
                     st.metric("승률 예측 결과: ", pred1[0]*100)
 
-            # # 시각화 해보기
-            # st.subheader('시각화 부분')
+            # 시각화 해보기
+            st.subheader('시각화 부분')
 
-            # # 특성 중요도를 가져옵니다.
-            # importance = model.get_booster().get_score(importance_type='weight')
-            # feature_importances = {feature: score for feature, score in importance.items()}
+            # 특성 중요도를 가져옵니다.
+            importance = model.get_booster().get_score(importance_type='weight')
+            feature_importances = {feature: score for feature, score in importance.items()}
 
-            # # 모든 특성의 중요도 값을 0으로 초기화합니다.
-            # for feature in model.get_booster().feature_names:
-            #     if feature not in feature_importances:
-            #         feature_importances[feature] = 0
+            # 모든 특성의 중요도 값을 0으로 초기화합니다.
+            for feature in model.get_booster().feature_names:
+                if feature not in feature_importances:
+                    feature_importances[feature] = 0
         
-            # # 중요도 값에 따라 특성을 정렬합니다.
-            # sorted_feature_importances = sorted(feature_importances.items(), key=lambda x: x[1], reverse=True)
+            # 중요도 값에 따라 특성을 정렬합니다.
+            sorted_feature_importances = sorted(feature_importances.items(), key=lambda x: x[1], reverse=True)
 
-            # # Plotly를 사용하여 특성 중요도를 막대그래프로 시각화합니다.
-            # fig = go.Figure(go.Bar(
-            #         x=[val[1] for val in sorted_feature_importances],
-            #         y=[val[0] for val in sorted_feature_importances],
-            #         orientation='h',
-            #         marker=dict(color='rgb(158,202,225)',
-            #         line=dict(color='rgb(8,48,107)',width=1.5)),
-            #         pacity=0.6))
+            # Plotly를 사용하여 특성 중요도를 막대그래프로 시각화합니다.
+            fig = go.Figure(go.Bar(
+                    x=[val[1] for val in sorted_feature_importances],
+                    y=[val[0] for val in sorted_feature_importances],
+                    orientation='h',
+                    marker=dict(color='rgb(158,202,225)',
+                    line=dict(color='rgb(8,48,107)',width=1.5)),
+                    pacity=0.6))
 
-            # fig.update_layout(
-            #     title={
-            #         'text': "XGBoost 특성 중요도",
-            #         'y':0.9,
-            #         'x':0.5,
-            #         'xanchor': 'center',
-            #         'yanchor': 'top'},
-            #     xaxis_title={
-            #         'text': "특성 중요도",
-            #         'font': {'size': 14}},
-            #     yaxis_title={
-            #         'text': "특성",
-            #         'font': {'size': 14}},
-            #     font=dict(size=14))
+            fig.update_layout(
+                title={
+                    'text': "XGBoost 특성 중요도",
+                    'y':0.9,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'},
+                xaxis_title={
+                    'text': "특성 중요도",
+                    'font': {'size': 14}},
+                yaxis_title={
+                    'text': "특성",
+                    'font': {'size': 14}},
+                font=dict(size=14))
 
-            # st.plotly_chart(fig)
+            st.plotly_chart(fig)
 
 
     with tab3:
